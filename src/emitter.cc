@@ -33,7 +33,7 @@ static void EmitAsyncComplete(uv_work_t *req,int status) {
     Event *work = static_cast<Event *>(req->data);
 
     // set up return arguments
-    Handle<Value> argv[] = {
+    Local<Value> argv[] = {
         String::NewFromUtf8(isolate, work->eventId.c_str()),
         String::NewFromUtf8(isolate, work->message.c_str())
     };

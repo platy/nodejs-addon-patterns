@@ -1,6 +1,7 @@
 // for addon
 #include <node.h>
 #include <v8.h>
+#include <nan.h>
 #include <string>
 #include <iostream>
 #include "functions.h"
@@ -16,7 +17,7 @@ NAN_METHOD(start) {
 
   int32_t numberOfMessages = info[0]->ToInt32()->Value();
   startThread(numberOfMessages);
-  info.GetReturnValue().Set(Undefined(isolate));
+  info.GetReturnValue().Set(Nan::Undefined());
 }
 
 // setListener(listener)
@@ -28,5 +29,5 @@ NAN_METHOD(setListener) {
   v8::Local<v8::Object> localListener = info[0]->ToObject();
   emitterSetListener(isolate, localListener);
 
-  info.GetReturnValue().Set(Undefined(isolate));
+  info.GetReturnValue().Set(Nan::Undefined());
 }
