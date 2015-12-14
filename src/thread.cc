@@ -10,7 +10,7 @@ void runThread(void *arg) {
     int32_t numberOfMessages = *static_cast<int32_t*>(arg);
     int i;
     for (i=0; i<numberOfMessages; i++) {
-        emitMessage("Thread running");
+        queueEmit("message", "Thread running");
         usleep(1*1000*1000);
     }
 }
