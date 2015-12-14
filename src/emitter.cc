@@ -39,8 +39,7 @@ static void EmitAsyncComplete(uv_work_t *req,int status) {
     };
 
     Local<Object> eventEmitter = Local<Object>::New(isolate, listener);
-    Local<Object> emitFunction = eventEmitter->Get(isolate->GetCurrentContext(), String::NewFromUtf8(isolate, "emit")).ToLocalChecked()->ToObject();
-    emitFunction->CallAsFunction(eventEmitter, 2, argv);
+    Nan::MakeCallback(eventEmitter, "emit", 2, argv);
 
     delete work;
 }
