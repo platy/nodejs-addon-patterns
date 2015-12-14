@@ -14,10 +14,10 @@ struct Event {
   std::string message;
 };
 
-static Persistent<Object> listener;
+static Nan::Persistent<Object> listener;
 
-void emitterSetListener(Isolate* isolate, Local<Object> localListener) {
-    listener.Reset(isolate, localListener);
+void emitterSetListener(Local<Object> localListener) {
+    listener.Reset(localListener);
 }
 
 // called by libuv worker in separate thread
@@ -27,18 +27,17 @@ static void EmitAsync(uv_work_t *req) {
 
 // called by libuv in event loop when async function completes
 static void EmitAsyncComplete(uv_work_t *req,int status) {
-    Isolate * isolate = Isolate::GetCurrent();
-    HandleScope handleScope(isolate);
+    Nan::HandleScope scope;
 
     Event *work = static_cast<Event *>(req->data);
 
     // set up return arguments
     Local<Value> argv[] = {
-        String::NewFromUtf8(isolate, work->eventId.c_str()),
-        String::NewFromUtf8(isolate, work->message.c_str())
+        Nan::New(work->eventId.c_str()).ToLocalChecked(),
+        Nan::New(work->message.c_str()).ToLocalChecked()
     };
 
-    Local<Object> eventEmitter = Local<Object>::New(isolate, listener);
+    Local<Object> eventEmitter = Nan::New(listener);
     Nan::MakeCallback(eventEmitter, "emit", 2, argv);
 
     delete work;
