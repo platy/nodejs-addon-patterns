@@ -1,4 +1,4 @@
-
+// FIXME : I've found the way this should be done using uv_async - an example is in github.com/relayr/node-bacnet
 #include <iostream>
 #include <stdint.h>
 #include <stdio.h>
